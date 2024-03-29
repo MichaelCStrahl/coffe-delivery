@@ -19,4 +19,5 @@ export const defaultTheme = {
 	"gray-900": "#272221",
 
 	white: "#FFFFFF",
+	black: "#000000",
 };
