@@ -40,7 +40,7 @@ export const Description = styled.p`
 
 export const InfoContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.2fr;
   gap: 1.25rem;
 `;
 
@@ -69,4 +69,23 @@ export const IconInfo = styled.span<InfoIconProps>`
   justify-content: center;
   border-radius: 50%;
   background: ${(props) => props.theme[INFO_ICON_COLOR[props.infoColor]]};
+`;
+
+export const CoffeeListContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 9rem;
+`;
+
+export const TitleSecondary = styled.header`
+  font-size: 2rem;
+  color: ${(props) => props.theme["gray-800"]};
+`;
+
+export const CoffeeList = styled.div`
+  display: grid;
+  margin-top: 3.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.25rem;
+  row-gap: 2.5rem;
 `;

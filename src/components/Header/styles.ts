@@ -43,6 +43,7 @@ export const LocationButton = styled.div`
 `;
 
 export const CartButton = styled.button`
+  cursor: pointer;
   position: relative;
   width: 2.4rem;
   height: 2.4rem;

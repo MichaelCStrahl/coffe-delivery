@@ -2,16 +2,20 @@ import { Coffee, Package, ShoppingCart, Timer } from "phosphor-react";
 import { defaultMethod } from "react-router-dom/dist/dom";
 import bgBanner from "../../assets/bg-banner.png";
 import coffeeBanner from "../../assets/coffee-banner.png";
+import { Card } from "../../components/Card";
 import { Container } from "../../components/Container";
 import {
 	BannerContent,
 	BannerLayout,
+	CoffeeList,
+	CoffeeListContainer,
 	Description,
 	IconInfo,
 	InfoContainer,
 	InfoItem,
 	MainContentContainer,
 	MainTitle,
+	TitleSecondary,
 } from "./styles";
 
 export function Home() {
@@ -65,6 +69,17 @@ export function Home() {
 				</Container>
 				<img id="bg-banner" src={bgBanner} alt="" />
 			</BannerLayout>
+			<Container>
+				<CoffeeListContainer>
+					<TitleSecondary>Nossos Cafés</TitleSecondary>
+
+					<CoffeeList>
+						{[1, 2, 3, 4, 5, 6].map((index) => (
+							<Card key={index} />
+						))}
+					</CoffeeList>
+				</CoffeeListContainer>
+			</Container>
 		</>
 	);
 }
