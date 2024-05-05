@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
-export const CardLayout = styled.div`
+export const BaseCardLayout = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 19.375rem;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  border-radius: 6px;
 
   background: ${(props) => props.theme["gray-200"]};
+`;
+
+export const CardProductLayout = styled(BaseCardLayout)`
+  justify-content: flex-end;
   border-radius: 6px 36px 6px 36px;
   padding: 1.25rem 1.5rem;
 
@@ -21,6 +26,21 @@ export const CardLayout = styled.div`
     width: 7.5rem;
     height: 7.5rem;
   }
+`;
+
+export const CardCheckoutLayout = styled(BaseCardLayout)`
+  border-radius: 6px 36px 6px 36px;
+  padding: 2.5rem;
+  align-items: flex-start;
+  margin-top: 0.75rem;
+  min-height: auto;
+`;
+
+export const CardCheckoutListItemsLayout = styled(BaseCardLayout)`
+  padding: 2.5rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  min-height: auto;
 `;
 
 export const Badge = styled.span`
@@ -70,7 +90,7 @@ export const Price = styled.span`
   font-family: 'Baloo 2';
   font-weight: 800;
   padding-left: 0.2rem;
-  line-height: 0.9;
+  line-height: 0.7;
 `;
 
 export const ActionsContent = styled.div`

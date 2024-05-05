@@ -1,8 +1,7 @@
 import { Coffee, Package, ShoppingCart, Timer } from "phosphor-react";
-import { defaultMethod } from "react-router-dom/dist/dom";
 import bgBanner from "../../assets/bg-banner.png";
 import coffeeBanner from "../../assets/coffee-banner.png";
-import { Card } from "../../components/Card";
+import { ProductCard } from "../../components/Card";
 import { Container } from "../../components/Container";
 import {
 	BannerContent,
@@ -75,7 +74,7 @@ export function Home() {
 
 					<CoffeeList>
 						{[1, 2, 3, 4, 5, 6].map((index) => (
-							<Card key={index} />
+							<ProductCard key={index} />
 						))}
 					</CoffeeList>
 				</CoffeeListContainer>

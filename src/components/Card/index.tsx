@@ -6,7 +6,7 @@ import {
 	ActionsContent,
 	AmountContent,
 	Badge,
-	CardLayout,
+	CardProductLayout,
 	CardTitle,
 	CartButton,
 	Currency,
@@ -15,9 +15,9 @@ import {
 	PriceContent,
 } from "./styles";
 
-export function Card() {
+export function ProductCard() {
 	return (
-		<CardLayout>
+		<CardProductLayout>
 			<img id="coffee-image" src={coffee} alt="Café Expresso Tradicional" />
 			<Badge>Tradicional</Badge>
 			<CardTitle>Expresso Simples</CardTitle>
@@ -46,6 +46,6 @@ export function Card() {
 					</CartButton>
 				</ActionsContent>
 			</ActionsBlock>
-		</CardLayout>
+		</CardProductLayout>
 	);
 }
