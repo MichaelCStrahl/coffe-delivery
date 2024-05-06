@@ -198,7 +198,7 @@ export const CheckoutActionContent = styled.div`
   flex-direction: column;
   width: 100%;
 
-  button {
+  a {
     background-color: ${(props) => props.theme["yellow-400"]};
     width: 100%;
     border-radius: 6px;
@@ -207,6 +207,8 @@ export const CheckoutActionContent = styled.div`
     cursor: pointer;
 
     font-size: 0.875rem;
+    text-decoration: none;
+    text-align: center;
     font-weight: 700;
     color: ${(props) => props.theme.white};
     text-transform: uppercase;

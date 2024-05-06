@@ -8,6 +8,7 @@ import {
 	Plus,
 	Trash,
 } from "phosphor-react";
+import { NavLink } from "react-router-dom";
 import coffee from "../../assets/coffee-options/espresso.png";
 import {
 	AmountContent,
@@ -191,8 +192,9 @@ export function Checkout() {
 									<span>Total</span>
 									<span>R$ 49,70</span>
 								</PurchaseSummaryItemTotal>
-
-								<button type="submit">Confirmar Pedido</button>
+								<NavLink to="/success" title="Confirmar Pedido" type="submit">
+									Confirmar Pedido
+								</NavLink>
 							</CheckoutActionContent>
 						</CardCheckoutLayout>
 					</div>
