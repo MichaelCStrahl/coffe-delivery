@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	Bank,
 	CreditCard,
@@ -8,19 +9,24 @@ import {
 	Plus,
 	Trash,
 } from "phosphor-react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
+import { z } from "zod";
 import coffee from "../../assets/coffee-options/espresso.png";
 import {
 	AmountContent,
 	CardCheckoutLayout,
 } from "../../components/Card/styles";
 import { Container } from "../../components/Container";
+import { InputCheckbox } from "../../components/InputCheckbox";
+import { CheckboxItem } from "../../components/InputCheckbox/styles";
+import { InputText } from "../../components/InputText";
 import {
 	CheckboxContent,
-	CheckboxItem,
 	CheckoutActionContent,
 	CheckoutContent,
 	CheckoutTitle,
+	ErrorPaymentMethodMessage,
 	ItemActionsContent,
 	ItemCardContent,
 	ItemContent,
@@ -32,10 +38,45 @@ import {
 	ShippingHeaderContent,
 } from "./styles";
 
+const deliveryAddressFormValidationSchema = z.object({
+	zipCode: z.string().min(8, "Informe o CEP").max(9),
+	street: z.string().min(1, "Informe a Rua"),
+	number: z.number({ message: "Informe o Número" }).min(1, "Informe o Número"),
+	complement: z.string().optional(),
+	neighborhood: z.string().min(1, "Informe o Bairro"),
+	city: z.string().min(1, "Informe a Cidade"),
+	stateAbbreviation: z
+		.string()
+		.min(2, "Informe o Estado")
+		.max(2, "Informe o Estado abreviado"),
+	paymentMethod: z.enum(["credit", "debit", "cash"], {
+		invalid_type_error: "Informe um método de pagamento",
+	}),
+});
+
+export type FormInputType = z.infer<typeof deliveryAddressFormValidationSchema>;
+
 export function Checkout() {
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors },
+	} = useForm<FormInputType>({
+		resolver: zodResolver(deliveryAddressFormValidationSchema),
+	});
+
+	const hasPaymentMethodError = !!errors.paymentMethod?.message;
+
+	const selectedPaymentMethod = watch("paymentMethod");
+
+	const handleDeliveryAddress: SubmitHandler<FormInputType> = (data) => {
+		console.log(data);
+	};
+
 	return (
 		<Container>
-			<form>
+			<form onSubmit={handleSubmit(handleDeliveryAddress)}>
 				<CheckoutContent>
 					<div>
 						<CheckoutTitle>Complete seu pedido</CheckoutTitle>
@@ -48,47 +89,54 @@ export function Checkout() {
 								</ShippingHeaderContent>
 							</ShippingHeader>
 							<MainFormLayout>
-								<input
+								<InputText
 									placeholder="CEP"
 									id="zipCode"
 									type="text"
-									style={{ gridArea: "zipCode" }}
+									errorMessage={errors.zipCode?.message as string}
+									{...register("zipCode")}
 								/>
-								<input
+								<InputText
 									placeholder="Rua"
-									style={{ gridArea: "street" }}
 									id="street"
 									type="text"
+									errorMessage={errors.street?.message as string}
+									{...register("street")}
 								/>
-								<input
+								<InputText
 									placeholder="Número"
 									id="number"
 									type="text"
-									style={{ gridArea: "number" }}
+									errorMessage={errors.number?.message as string}
+									{...register("number", { valueAsNumber: true })}
 								/>
-								<input
+								<InputText
 									placeholder="Complemento"
 									id="complement"
 									type="text"
-									style={{ gridArea: "complement" }}
+									errorMessage={errors.complement?.message as string}
+									{...register("complement")}
 								/>
-								<input
+								<InputText
 									placeholder="Bairro"
 									id="neighborhood"
 									type="text"
-									style={{ gridArea: "neighborhood" }}
+									errorMessage={errors.neighborhood?.message as string}
+									{...register("neighborhood")}
 								/>
-								<input
+								<InputText
 									placeholder="Cidade"
 									id="city"
 									type="text"
-									style={{ gridArea: "city" }}
+									errorMessage={errors.city?.message as string}
+									{...register("city")}
 								/>
-								<input
+								<InputText
 									placeholder="UF"
 									id="stateAbbreviation"
 									type="text"
-									style={{ gridArea: "stateAbbreviation" }}
+									errorMessage={errors.stateAbbreviation?.message as string}
+									{...register("stateAbbreviation")}
 								/>
 							</MainFormLayout>
 						</CardCheckoutLayout>
@@ -105,22 +153,33 @@ export function Checkout() {
 							</ShippingHeader>
 
 							<CheckboxContent>
-								<CheckboxItem htmlFor="credit" data-state={true}>
-									<CreditCard size={16} color="#8047F8" />
-									<input type="radio" name="paymentMethod" id="credit" />
-									<span>Cartão de crédito</span>
-								</CheckboxItem>
-								<CheckboxItem htmlFor="credit">
-									<Bank size={16} color="#8047F8" />
-									<input type="radio" name="paymentMethod" id="debit" />
-									<span>Cartão de Débito</span>
-								</CheckboxItem>
-								<CheckboxItem htmlFor="credit">
-									<Money size={16} color="#8047F8" />
-									<input type="radio" name="paymentMethod" id="money" />
-									<span>Dinheiro</span>
-								</CheckboxItem>
+								<InputCheckbox
+									value="credit"
+									paymentSelected={selectedPaymentMethod === "credit"}
+									hasError={hasPaymentMethodError}
+									textContent={"Cartão de crédito"}
+									{...register("paymentMethod")}
+								/>
+								<InputCheckbox
+									value="debit"
+									paymentSelected={selectedPaymentMethod === "debit"}
+									hasError={hasPaymentMethodError}
+									textContent={"Cartão de Débito"}
+									{...register("paymentMethod")}
+								/>
+								<InputCheckbox
+									value="cash"
+									paymentSelected={selectedPaymentMethod === "cash"}
+									hasError={hasPaymentMethodError}
+									textContent={"Dinheiro"}
+									{...register("paymentMethod")}
+								/>
 							</CheckboxContent>
+							{hasPaymentMethodError && (
+								<ErrorPaymentMethodMessage>
+									{errors.paymentMethod?.message as string}
+								</ErrorPaymentMethodMessage>
+							)}
 						</CardCheckoutLayout>
 					</div>
 					<div>
@@ -192,9 +251,9 @@ export function Checkout() {
 									<span>Total</span>
 									<span>R$ 49,70</span>
 								</PurchaseSummaryItemTotal>
-								<NavLink to="/success" title="Confirmar Pedido" type="submit">
+								<button title="Confirmar Pedido" type="submit">
 									Confirmar Pedido
-								</NavLink>
+								</button>
 							</CheckoutActionContent>
 						</CardCheckoutLayout>
 					</div>

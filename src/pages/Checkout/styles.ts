@@ -54,27 +54,6 @@ export const MainFormLayout = styled.div`
   grid-gap: 1rem 0.75rem;
   margin-top: 2rem;
   width: 100%;
-
-  input {
-    border: 1px solid ${(props) => props.theme["gray-400"]};
-    background: ${(props) => props.theme["gray-300"]};
-    color: ${(props) => props.theme["gray-700"]};
-    border-radius: 4px;
-    height: 2.65rem;
-    padding-left: 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-  }
-
-  input::placeholder {
-    font-size: 0.875rem;
-    color: ${(props) => props.theme["gray-600"]};
-  }
-
-  input:focus {
-    border: 1px solid red;
-    box-shadow: 0 0 0 0 !important;
-  }
 `;
 
 export const CheckboxContent = styled.div`
@@ -84,39 +63,12 @@ export const CheckboxContent = styled.div`
   margin-top: 2rem;
 `;
 
-export const CheckboxItem = styled.label`
-  cursor: pointer;
+export const ErrorPaymentMethodMessage = styled.p`
   display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-  padding: 1rem;
-  
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background-color: ${(props) => props.theme["gray-400"]};
-  
-  text-transform: uppercase;
-  transition: all 0.2s;
-
-  :hover {
-    background-color: ${(props) => props.theme["gray-500"]};
-  }
-
-  input {
-    display: none;
-  }
-
-  &[data-state="true"] {
-    background-color: ${(props) => props.theme["purple-100"]};
-    border-color: ${(props) => props.theme["purple-400"]};
-  }
-
-  span {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    line-height: 1.6;
-  }
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-top: 0.25rem;
+  color: ${(props) => props.theme.red};
 `;
 
 export const ItemCardContent = styled.div`
