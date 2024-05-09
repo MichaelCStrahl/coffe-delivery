@@ -43,6 +43,13 @@ export const CardCheckoutListItemsLayout = styled(BaseCardLayout)`
   min-height: auto;
 `;
 
+export const BadgeContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+`;
+
 export const Badge = styled.span`
   font-size: 0.625rem;
   text-transform: uppercase;

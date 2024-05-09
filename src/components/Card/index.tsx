@@ -6,6 +6,7 @@ import {
 	ActionsContent,
 	AmountContent,
 	Badge,
+	BadgeContent,
 	CardProductLayout,
 	CardTitle,
 	CartButton,
@@ -15,19 +16,31 @@ import {
 	PriceContent,
 } from "./styles";
 
-export function ProductCard() {
+interface ProductCardProps {
+	coffee: Coffee;
+}
+
+export function ProductCard({ coffee }: ProductCardProps) {
+	const { description, image, price, tags, title } = coffee;
+	const currencyPrice = price.toLocaleString("pt-BR", {
+		currency: "BRL",
+		minimumFractionDigits: 2,
+	});
+
 	return (
 		<CardProductLayout>
-			<img id="coffee-image" src={coffee} alt="Café Expresso Tradicional" />
-			<Badge>Tradicional</Badge>
-			<CardTitle>Expresso Simples</CardTitle>
-			<DescriptionCard>
-				O tradicional café feito com água quente e grãos moídos
-			</DescriptionCard>
+			<img id="coffee-image" src={image} alt="Café Expresso Tradicional" />
+			<BadgeContent>
+				{tags.map((tag) => (
+					<Badge>{tag}</Badge>
+				))}
+			</BadgeContent>
+			<CardTitle>{title}</CardTitle>
+			<DescriptionCard>{description}</DescriptionCard>
 			<ActionsBlock>
 				<PriceContent>
 					<Currency>R$</Currency>
-					<Price>9,90</Price>
+					<Price>{currencyPrice}</Price>
 				</PriceContent>
 				<ActionsContent>
 					<AmountContent>

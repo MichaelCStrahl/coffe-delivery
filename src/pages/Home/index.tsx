@@ -3,6 +3,8 @@ import bgBanner from "../../assets/bg-banner.png";
 import coffeeBanner from "../../assets/coffee-banner.png";
 import { ProductCard } from "../../components/Card";
 import { Container } from "../../components/Container";
+import { coffees } from "../../data/products";
+
 import {
 	BannerContent,
 	BannerLayout,
@@ -73,8 +75,8 @@ export function Home() {
 					<TitleSecondary>Nossos Cafés</TitleSecondary>
 
 					<CoffeeList>
-						{[1, 2, 3, 4, 5, 6].map((index) => (
-							<ProductCard key={index} />
+						{coffees.map((coffee) => (
+							<ProductCard key={coffee.id} coffee={coffee} />
 						))}
 					</CoffeeList>
 				</CoffeeListContainer>
