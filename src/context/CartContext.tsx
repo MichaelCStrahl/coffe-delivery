@@ -1,6 +1,14 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { FormInputType } from "../pages/Checkout";
+import {
+	addItemToCartAction,
+	addProductQuantityAction,
+	checkoutAction,
+	removeItemFromCartAction,
+	removeProductQuantityAction,
+} from "../reducers/carts/actions";
+import { type CartState, cartReducers } from "../reducers/carts/reducers";
 
 export interface CartItems extends Coffee {
 	quantity: number;
@@ -13,8 +21,8 @@ export interface Order {
 }
 
 interface CartContextType {
-	cartItems: CartItems[];
-	order: Order | null;
+	cart: CartItems[];
+	order: Order[];
 	checkout: (shippingDetails: FormInputType) => void;
 	addItemToCart: (product: CartItems) => void;
 	removeItemFromCart: (productId: string) => void;
@@ -25,75 +33,60 @@ interface CartContextType {
 export const CartContext = createContext({} as CartContextType);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-	const [cartItems, setCartItems] = useState<CartItems[]>([]);
-	const [order, setOrder] = useState<Order | null>(null);
-
 	const navigate = useNavigate();
+	const [cartState, dispatch] = useReducer(
+		cartReducers,
+		{
+			cart: [],
+			order: [],
+		},
+		(cartState) => {
+			const storedStateAsJSON = localStorage.getItem(
+				"@coffee-delivery:cart-state-1.0.0",
+			);
+
+			if (storedStateAsJSON) {
+				return JSON.parse(storedStateAsJSON);
+			}
+
+			return cartState;
+		},
+	);
+
+	const { cart, order } = cartState as CartState;
 
 	const addItemToCart = (product: CartItems) => {
-		setCartItems((state) => [...state, product]);
+		dispatch(addItemToCartAction(product));
 	};
 
 	const removeItemFromCart = (productId: string) => {
-		const filteredCartItems = cartItems.filter(
-			(cartItem) => cartItem.id !== productId,
-		);
-
-		setCartItems(filteredCartItems);
+		dispatch(removeItemFromCartAction(productId));
 	};
 
 	const addProductQuantity = (productId: string, quantity: number) => {
-		const updateProductQuantity = cartItems.map((cartItem) => {
-			if (cartItem.id === productId) {
-				return {
-					...cartItem,
-					quantity: quantity,
-				};
-			}
-
-			return cartItem;
-		});
-
-		setCartItems(updateProductQuantity);
+		dispatch(addProductQuantityAction(productId, quantity));
 	};
 
 	const removeProductQuantity = (productId: string, quantity: number) => {
-		const updateProductQuantity = cartItems.map((cartItem) => {
-			if (cartItem.id === productId) {
-				if (cartItem.quantity > 1) {
-					return {
-						...cartItem,
-						quantity: quantity,
-					};
-				}
-			}
-
-			return cartItem;
-		});
-
-		setCartItems(updateProductQuantity);
+		dispatch(removeProductQuantityAction(productId, quantity));
 	};
 
 	const checkout = (shippingDetails: FormInputType) => {
-		if (cartItems.length === 0) {
-			return alert("É preciso ter pelo menos um item no carrinho");
-		}
-
-		const newOrder = {
-			id: new Date().getTime().toString(),
-			shipping: shippingDetails,
-			items: cartItems,
-		};
-
-		setOrder(newOrder);
-		setCartItems([]);
-		navigate(`/order/${newOrder.id}/success`);
+		dispatch(checkoutAction(shippingDetails, navigate));
 	};
+
+	useEffect(() => {
+		if (cartState) {
+			const stateJSON = JSON.stringify(cartState);
+
+			localStorage.setItem("@coffee-delivery:cart-state-1.0.0", stateJSON);
+		}
+	}, [cartState]);
 
 	return (
 		<CartContext.Provider
 			value={{
-				cartItems,
+				cart,
 				order,
 				checkout,
 				addItemToCart,

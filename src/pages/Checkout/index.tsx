@@ -46,8 +46,8 @@ const deliveryAddressFormValidationSchema = z.object({
 export type FormInputType = z.infer<typeof deliveryAddressFormValidationSchema>;
 
 export function Checkout() {
-	const { cartItems, checkout } = useContext(CartContext);
-	const hasItemsInCart = cartItems.length > 0;
+	const { cart, checkout } = useContext(CartContext);
+	const hasItemsInCart = cart.length > 0;
 	const {
 		register,
 		handleSubmit,
@@ -64,7 +64,7 @@ export function Checkout() {
 		minimumFractionDigits: 2,
 	});
 
-	const itemsPrice = cartItems.reduce(
+	const itemsPrice = cart.reduce(
 		(acc, { price, quantity }) => acc + price * quantity,
 		0,
 	);
@@ -203,7 +203,7 @@ export function Checkout() {
 							{hasItemsInCart && (
 								<>
 									<CartItemsContent>
-										{cartItems.map((coffee) => (
+										{cart.map((coffee) => (
 											<CartProduct key={coffee.id} cartCoffee={coffee} />
 										))}
 									</CartItemsContent>

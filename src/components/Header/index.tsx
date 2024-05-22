@@ -12,9 +12,9 @@ import logoCoffeeDelivery from "../../assets/coffee-delivery-logo.svg";
 import { CartContext } from "../../context/CartContext";
 
 export function Header() {
-	const { cartItems } = useContext(CartContext);
-	const hasCartItems = cartItems.length !== 0;
-	const numberOfCartItems = cartItems.length;
+	const { cart } = useContext(CartContext);
+	const hasCartItems = cart.length !== 0;
+	const numberOfCartItems = cart.length;
 
 	return (
 		<HeaderContainer>

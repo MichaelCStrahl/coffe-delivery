@@ -1,6 +1,6 @@
 import { Clock, CurrencyDollar, MapPin } from "phosphor-react";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import successImage from "../../assets/success-image.png";
 import { Container } from "../../components/Container";
 import { CartContext, type Order } from "../../context/CartContext";
@@ -17,7 +17,9 @@ import {
 
 export function Success() {
 	const { order } = useContext(CartContext);
+	const { orderId } = useParams();
 	const navigate = useNavigate();
+	const orderData = order.find((item) => item.id === orderId);
 
 	const paymentMethod = {
 		credit: "Cartão de crédito",
@@ -25,11 +27,11 @@ export function Success() {
 		cash: "Dinheiro",
 	};
 
-	if (!order) {
+	if (!orderData) {
 		navigate("/");
 	}
 
-	const { shipping } = order as Order;
+	const { shipping } = orderData as Order;
 
 	return (
 		<Container>

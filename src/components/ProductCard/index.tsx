@@ -24,18 +24,16 @@ interface ProductCardProps {
 export function ProductCard({ coffee }: ProductCardProps) {
 	const [quantity, setQuantity] = useState(1);
 	const [isItemAdded, setIsItemAdded] = useState(false);
-	const {
-		cartItems,
-		addItemToCart,
-		addProductQuantity,
-		removeProductQuantity,
-	} = useContext(CartContext);
+	const { cart, addItemToCart, addProductQuantity, removeProductQuantity } =
+		useContext(CartContext);
 	const { id, description, image, price, tags, title } = coffee;
-	const hasProductInCart = cartItems.find((item) => item.id === coffee.id);
+	const hasProductInCart = cart.find((cartItem) => cartItem.id === coffee.id);
 	const currencyPrice = price.toLocaleString("pt-BR", {
 		currency: "BRL",
 		minimumFractionDigits: 2,
 	});
+
+	console.log(cart);
 
 	function handleAddQuantity() {
 		const addQuantity = quantity + 1;
