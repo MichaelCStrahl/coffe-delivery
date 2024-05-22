@@ -42,17 +42,19 @@ export const LocationButton = styled.div`
   }
 `;
 
-export const CartButton = styled.button`
-  cursor: pointer;
-  position: relative;
-  width: 2.4rem;
-  height: 2.4rem;
-  border: none;
-  border-radius: 6px;
-  background: ${(props) => props.theme["yellow-100"]};
+export const CartButton = styled.div`
+  a {
+    cursor: pointer;
+    position: relative;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    border-radius: 6px;
+    background: ${(props) => props.theme["yellow-100"]};
 
-  svg {
-    color: ${(props) => props.theme["yellow-700"]};
+    svg {
+      color: ${(props) => props.theme["yellow-700"]};
+    }
   }
 `;
 

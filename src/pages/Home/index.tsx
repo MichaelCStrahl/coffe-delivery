@@ -1,8 +1,8 @@
 import { Coffee, Package, ShoppingCart, Timer } from "phosphor-react";
 import bgBanner from "../../assets/bg-banner.png";
 import coffeeBanner from "../../assets/coffee-banner.png";
-import { ProductCard } from "../../components/Card";
 import { Container } from "../../components/Container";
+import { ProductCard } from "../../components/ProductCard";
 import { coffees } from "../../data/products";
 
 import {

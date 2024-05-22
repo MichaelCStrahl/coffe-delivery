@@ -6,10 +6,16 @@ import {
 	LocationButton,
 } from "./styles";
 
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import logoCoffeeDelivery from "../../assets/coffee-delivery-logo.svg";
+import { CartContext } from "../../context/CartContext";
 
 export function Header() {
+	const { cartItems } = useContext(CartContext);
+	const hasCartItems = cartItems.length !== 0;
+	const numberOfCartItems = cartItems.length;
+
 	return (
 		<HeaderContainer>
 			<img src={logoCoffeeDelivery} alt="" />
@@ -21,7 +27,9 @@ export function Header() {
 				<CartButton>
 					<NavLink to="/checkout" title="Checkout">
 						<ShoppingCart size="22" weight="fill" />
-						<CountCartItems>3</CountCartItems>
+						{hasCartItems && (
+							<CountCartItems>{numberOfCartItems}</CountCartItems>
+						)}
 					</NavLink>
 				</CartButton>
 			</nav>

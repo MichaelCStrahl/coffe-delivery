@@ -139,6 +139,9 @@ export const AmountContent = styled.div`
 
 export const CartButton = styled.button`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 2.4rem;
   height: 2.4rem;
   border: none;
@@ -147,12 +150,6 @@ export const CartButton = styled.button`
 
   :hover {
     background: ${(props) => props.theme["purple-400"]};
-  }
-
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   svg {

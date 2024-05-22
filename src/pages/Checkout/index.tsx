@@ -1,39 +1,27 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	Bank,
-	CreditCard,
-	CurrencyDollar,
-	MapPinLine,
-	Minus,
-	Money,
-	Plus,
-	Trash,
-} from "phosphor-react";
+import { CurrencyDollar, MapPinLine, Minus, Plus, Trash } from "phosphor-react";
+import { useContext } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import { z } from "zod";
-import coffee from "../../assets/coffee-options/espresso.png";
+import { CartProduct } from "../../components/CartProduct";
+import { Container } from "../../components/Container";
+import { InputCheckbox } from "../../components/InputCheckbox";
+import { InputText } from "../../components/InputText";
 import {
 	AmountContent,
 	CardCheckoutLayout,
-} from "../../components/Card/styles";
-import { Container } from "../../components/Container";
-import { InputCheckbox } from "../../components/InputCheckbox";
-import { CheckboxItem } from "../../components/InputCheckbox/styles";
-import { InputText } from "../../components/InputText";
+} from "../../components/ProductCard/styles";
+import { CartContext } from "../../context/CartContext";
 import {
 	CheckboxContent,
 	CheckoutActionContent,
 	CheckoutContent,
 	CheckoutTitle,
 	ErrorPaymentMethodMessage,
-	ItemActionsContent,
-	ItemCardContent,
-	ItemContent,
 	MainFormLayout,
 	PurchaseSummaryItem,
 	PurchaseSummaryItemTotal,
-	RemoveButton,
 	ShippingHeader,
 	ShippingHeaderContent,
 } from "./styles";
@@ -57,6 +45,8 @@ const deliveryAddressFormValidationSchema = z.object({
 export type FormInputType = z.infer<typeof deliveryAddressFormValidationSchema>;
 
 export function Checkout() {
+	const { cartItems, checkout } = useContext(CartContext);
+	const hasItemsInCart = cartItems.length > 0;
 	const {
 		register,
 		handleSubmit,
@@ -66,12 +56,36 @@ export function Checkout() {
 		resolver: zodResolver(deliveryAddressFormValidationSchema),
 	});
 
+	const shippingPrice = 3.5;
+	const currencyShippingPrice = shippingPrice.toLocaleString("pt-BR", {
+		style: "currency",
+		currency: "BRL",
+		minimumFractionDigits: 2,
+	});
+
+	const itemsPrice = cartItems.reduce(
+		(acc, { price, quantity }) => acc + price * quantity,
+		0,
+	);
+
+	const totalItemsPrice = itemsPrice.toLocaleString("pt-BR", {
+		style: "currency",
+		currency: "BRL",
+		minimumFractionDigits: 2,
+	});
+
+	const totalPrice = (shippingPrice + itemsPrice).toLocaleString("pt-BR", {
+		style: "currency",
+		currency: "BRL",
+		minimumFractionDigits: 2,
+	});
+
 	const hasPaymentMethodError = !!errors.paymentMethod?.message;
 
 	const selectedPaymentMethod = watch("paymentMethod");
 
 	const handleDeliveryAddress: SubmitHandler<FormInputType> = (data) => {
-		console.log(data);
+		checkout(data);
 	};
 
 	return (
@@ -185,76 +199,39 @@ export function Checkout() {
 					<div>
 						<CheckoutTitle>Cafés selecionados</CheckoutTitle>
 						<CardCheckoutLayout>
-							<ItemCardContent>
-								<img
-									id="coffee-image"
-									src={coffee}
-									alt="Café Expresso Tradicional"
-								/>
-								<ItemContent>
-									<h2>Expresso Tradicional</h2>
-									<ItemActionsContent>
-										<AmountContent>
-											<button type="button">
-												<Minus size="16" weight="fill" />
-											</button>
-											<span>1</span>
-											<button type="button">
-												<Plus size="16" weight="fill" />
-											</button>
-										</AmountContent>
-										<RemoveButton>
-											<Trash size="22" weight="regular" color="#8047F8" />
-											<span>Remover</span>
-										</RemoveButton>
-									</ItemActionsContent>
-								</ItemContent>
-								<p>R$ 9,90</p>
-							</ItemCardContent>
-							<ItemCardContent>
-								<img
-									id="coffee-image"
-									src={coffee}
-									alt="Café Expresso Tradicional"
-								/>
-								<ItemContent>
-									<h2>Expresso Tradicional</h2>
-									<ItemActionsContent>
-										<AmountContent>
-											<button type="button">
-												<Minus size="16" weight="fill" />
-											</button>
-											<span>1</span>
-											<button type="button">
-												<Plus size="16" weight="fill" />
-											</button>
-										</AmountContent>
-										<RemoveButton>
-											<Trash size="22" weight="regular" color="#8047F8" />
-											<span>Remover</span>
-										</RemoveButton>
-									</ItemActionsContent>
-								</ItemContent>
-								<p>R$ 9,90</p>
-							</ItemCardContent>
+							{hasItemsInCart && (
+								<>
+									{cartItems.map((coffee) => (
+										<CartProduct key={coffee.id} cartCoffee={coffee} />
+									))}
 
-							<CheckoutActionContent>
-								<PurchaseSummaryItem>
-									<span>Total items</span>
-									<span>R$ 29,70</span>
-								</PurchaseSummaryItem>
-								<PurchaseSummaryItem>
-									<span>Entrega</span>
-									<span>R$ 20,00</span>
-								</PurchaseSummaryItem>
-								<PurchaseSummaryItemTotal>
-									<span>Total</span>
-									<span>R$ 49,70</span>
-								</PurchaseSummaryItemTotal>
-								<button title="Confirmar Pedido" type="submit">
-									Confirmar Pedido
-								</button>
-							</CheckoutActionContent>
+									<CheckoutActionContent>
+										<PurchaseSummaryItem>
+											<span>Total items</span>
+											<span>{totalItemsPrice}</span>
+										</PurchaseSummaryItem>
+										<PurchaseSummaryItem>
+											<span>Entrega</span>
+											<span>{currencyShippingPrice}</span>
+										</PurchaseSummaryItem>
+										<PurchaseSummaryItemTotal>
+											<span>Total</span>
+											<span>{totalPrice}</span>
+										</PurchaseSummaryItemTotal>
+										<button title="Confirmar Pedido" type="submit">
+											Confirmar Pedido
+										</button>
+									</CheckoutActionContent>
+								</>
+							)}
+							{!hasItemsInCart && (
+								<CheckoutActionContent>
+									<p>Nenhum item selecionado</p>
+									<NavLink to="/" title="Coffee Delivery">
+										<p>Voltar para Home</p>
+									</NavLink>
+								</CheckoutActionContent>
+							)}
 						</CardCheckoutLayout>
 					</div>
 				</CheckoutContent>

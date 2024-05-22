@@ -1,6 +1,9 @@
 import { Clock, CurrencyDollar, MapPin } from "phosphor-react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import successImage from "../../assets/success-image.png";
 import { Container } from "../../components/Container";
+import { CartContext, type Order } from "../../context/CartContext";
 import {
 	CardSuccess,
 	CardSuccessContent,
@@ -13,6 +16,21 @@ import {
 } from "./styles";
 
 export function Success() {
+	const { order } = useContext(CartContext);
+	const navigate = useNavigate();
+
+	const paymentMethod = {
+		credit: "Cartão de crédito",
+		debit: "Cartão de débito",
+		cash: "Dinheiro",
+	};
+
+	if (!order) {
+		navigate("/");
+	}
+
+	const { shipping } = order as Order;
+
 	return (
 		<Container>
 			<SuccessHeader>
@@ -23,19 +41,19 @@ export function Success() {
 				<CardSuccess>
 					<CardSuccessContent>
 						<SuccessItem>
-							<SuccessIcon>
+							<SuccessIcon variant="purple">
 								<MapPin weight="fill" size={16} color="#fff" />
 							</SuccessIcon>
 							<SuccessDescription>
 								<div>
 									<h2>Entrega em </h2>
-									<p>Rua João Daniel Martinelli, 102</p>
+									<p>{`${shipping.street}, ${shipping.number}`}</p>
 								</div>
-								<div>Farrapos - Porto Alegre, RS</div>
+								<div>{`${shipping.neighborhood} - ${shipping.city}, ${shipping.stateAbbreviation}`}</div>
 							</SuccessDescription>
 						</SuccessItem>
 						<SuccessItem>
-							<SuccessIcon>
+							<SuccessIcon variant="yellow">
 								<Clock weight="fill" size={16} color="#fff" />
 							</SuccessIcon>
 							<SuccessDescription>
@@ -44,12 +62,12 @@ export function Success() {
 							</SuccessDescription>
 						</SuccessItem>
 						<SuccessItem>
-							<SuccessIcon>
+							<SuccessIcon variant="yellowDark">
 								<CurrencyDollar weight="fill" size={16} color="#fff" />
 							</SuccessIcon>
 							<SuccessDescription>
 								<h2>Pagamento na entrega</h2>
-								<p>Cartão de crédito</p>
+								<p>{`${paymentMethod[shipping.paymentMethod]}`}</p>
 							</SuccessDescription>
 						</SuccessItem>
 					</CardSuccessContent>

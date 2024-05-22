@@ -52,7 +52,17 @@ export const SuccessItem = styled.div`
   gap: 0.75rem;
 `;
 
-export const SuccessIcon = styled.div`
+const SUCCESS_INFO_COLOR = {
+	yellowDark: "yellow-700",
+	yellow: "yellow-400",
+	purple: "purple-400",
+} as const;
+
+interface SuccessIconProps {
+	variant: keyof typeof SUCCESS_INFO_COLOR;
+}
+
+export const SuccessIcon = styled.div<SuccessIconProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +70,7 @@ export const SuccessIcon = styled.div`
   width: 2rem;
   border-radius: 50%;
 
-  background: ${(props) => props.theme["yellow-700"]};
+  background: ${(props) => props.theme[SUCCESS_INFO_COLOR[props.variant]]};
 `;
 
 export const SuccessDescription = styled.div`
