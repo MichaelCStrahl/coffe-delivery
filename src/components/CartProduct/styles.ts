@@ -52,4 +52,9 @@ export const RemoveButton = styled.button`
   border-radius: 6px;
   border: 1px solid transparent;
   background-color: ${(props) => props.theme["gray-400"]};
+  transition: all 0.2s;
+
+  :hover {
+    background-color: ${(props) => props.theme["gray-500"]};
+  }
 `;

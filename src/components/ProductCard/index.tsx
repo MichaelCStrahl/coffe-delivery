@@ -1,9 +1,10 @@
-import { Minus, Plus, ShoppingCart } from "phosphor-react";
-import { useContext, useState } from "react";
+import { Check, Minus, Plus, ShoppingCart } from "phosphor-react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import {
 	ActionsBlock,
 	ActionsContent,
+	AddedItemToCardButton,
 	AmountContent,
 	Badge,
 	BadgeContent,
@@ -22,6 +23,7 @@ interface ProductCardProps {
 
 export function ProductCard({ coffee }: ProductCardProps) {
 	const [quantity, setQuantity] = useState(1);
+	const [isItemAdded, setIsItemAdded] = useState(false);
 	const {
 		cartItems,
 		addItemToCart,
@@ -54,10 +56,27 @@ export function ProductCard({ coffee }: ProductCardProps) {
 	}
 
 	function handleAddItemToCart() {
+		setIsItemAdded(true);
 		if (hasProductInCart) return;
 		const newItemToCart = { ...coffee, quantity };
 		addItemToCart(newItemToCart);
 	}
+
+	useEffect(() => {
+		let timeout: number;
+
+		if (isItemAdded) {
+			timeout = setTimeout(() => {
+				setIsItemAdded(false);
+			}, 1000);
+		}
+
+		return () => {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+		};
+	}, [isItemAdded]);
 
 	return (
 		<CardProductLayout>
@@ -84,9 +103,15 @@ export function ProductCard({ coffee }: ProductCardProps) {
 							<Plus size="16" weight="fill" />
 						</button>
 					</AmountContent>
-					<CartButton onClick={handleAddItemToCart}>
-						<ShoppingCart size="22" weight="fill" />
-					</CartButton>
+					{isItemAdded ? (
+						<AddedItemToCardButton>
+							<Check weight="fill" size={22} />
+						</AddedItemToCardButton>
+					) : (
+						<CartButton onClick={handleAddItemToCart}>
+							<ShoppingCart size="22" weight="fill" />
+						</CartButton>
+					)}
 				</ActionsContent>
 			</ActionsBlock>
 		</CardProductLayout>

@@ -11,6 +11,7 @@ import { InputText } from "../../components/InputText";
 import {
 	AmountContent,
 	CardCheckoutLayout,
+	CartItemsContent,
 } from "../../components/ProductCard/styles";
 import { CartContext } from "../../context/CartContext";
 import {
@@ -201,9 +202,14 @@ export function Checkout() {
 						<CardCheckoutLayout>
 							{hasItemsInCart && (
 								<>
-									{cartItems.map((coffee) => (
-										<CartProduct key={coffee.id} cartCoffee={coffee} />
-									))}
+									<CartItemsContent>
+										{cartItems.map((coffee) => (
+											<CartProduct key={coffee.id} cartCoffee={coffee} />
+										))}
+									</CartItemsContent>
+									<NavLink className="goToHome" to="/" title="Coffee Delivery">
+										<p>Escolher mais produtos</p>
+									</NavLink>
 
 									<CheckoutActionContent>
 										<PurchaseSummaryItem>

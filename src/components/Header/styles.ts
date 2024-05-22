@@ -51,9 +51,23 @@ export const CartButton = styled.div`
     border: none;
     border-radius: 6px;
     background: ${(props) => props.theme["yellow-100"]};
+    transition: all 0.2s;
 
     svg {
       color: ${(props) => props.theme["yellow-700"]};
+    }
+
+    :hover {
+      background-color: ${(props) => props.theme["yellow-400"]};
+
+      svg {
+        color: ${(props) => props.theme["yellow-100"]};
+      }
+
+      span {
+        background-color: ${(props) => props.theme["yellow-100"]};
+        color: ${(props) => props.theme["yellow-700"]};
+      }
     }
   }
 `;

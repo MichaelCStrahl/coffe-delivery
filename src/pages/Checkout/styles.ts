@@ -111,5 +111,10 @@ export const CheckoutActionContent = styled.div`
     color: ${(props) => props.theme.white};
     text-transform: uppercase;
     padding: 0.75rem 0;
+    transition: all 0.2s;
+
+    :hover {
+      background-color: ${(props) => props.theme["yellow-700"]};
+    }
   }
 `;

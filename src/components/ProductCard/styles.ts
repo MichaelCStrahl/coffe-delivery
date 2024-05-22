@@ -34,6 +34,40 @@ export const CardCheckoutLayout = styled(BaseCardLayout)`
   align-items: flex-start;
   margin-top: 0.75rem;
   min-height: auto;
+
+  .goToHome {
+    background-color: transparent;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 1rem;
+    cursor: pointer;
+    border: 2px solid ${(props) => props.theme["purple-400"]};
+
+    font-size: 0.875rem;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    color: ${(props) => props.theme["purple-400"]};
+    text-transform: uppercase;
+    padding: 0.75rem 0;
+    transition: all 0.2s;
+
+    :hover {
+      background-color: ${(props) => props.theme["purple-400"]};
+      color: ${(props) => props.theme.white};
+    }
+  }
+`;
+
+export const CartItemsContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  max-height: 16.25rem;
+  overflow: hidden;
+  overflow-y: auto;
+  padding-right: 0.625rem;
 `;
 
 export const CardCheckoutListItemsLayout = styled(BaseCardLayout)`
@@ -108,27 +142,35 @@ export const ActionsContent = styled.div`
 export const AmountContent = styled.div`
   display: flex;
   align-items: center;
-  height: 2.4rem;
   margin-right: 0.5rem;
-  padding: 0.5rem;
+  overflow: hidden;
 
   border-radius: 6px;
   background: ${(props) => props.theme["gray-400"]};
 
   button {
     display: flex;
+    align-items: center;
     border: none;
     background: transparent;
+    height: 2.4rem;
+    padding: 0.5rem;
     cursor: pointer;
+    transition: all 0.2s;
 
     svg {
       color: ${(props) => props.theme["purple-400"]};
     }
 
     :hover {
+      background-color: ${(props) => props.theme["gray-500"]};
       svg {
         color: ${(props) => props.theme["purple-700"]};
       }
+    }
+
+    :focus {
+      box-shadow: none;
     }
   }
 
@@ -147,6 +189,7 @@ export const CartButton = styled.button`
   border: none;
   border-radius: 6px;
   background: ${(props) => props.theme["purple-700"]};
+  transition: all 0.2s;
 
   :hover {
     background: ${(props) => props.theme["purple-400"]};
@@ -155,4 +198,16 @@ export const CartButton = styled.button`
   svg {
     color: ${(props) => props.theme.white};
   }
+`;
+
+export const AddedItemToCardButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: none;
+  border-radius: 6px;
+  background: ${(props) => props.theme["yellow-100"]};
+  color: ${(props) => props.theme["yellow-700"]};
 `;
